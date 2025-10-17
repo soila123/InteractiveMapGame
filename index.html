@@ -5,34 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belize Map Game</title>
   <style>
-    body {
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
       font-family: Comic Sans MS, sans-serif;
       text-align: center;
+      overflow: hidden; /* no scroll */
       background: url('ele.png') no-repeat center center fixed;
       background-size: cover;
-      margin: 0;
-      padding: 20px;
-      position: relative;
     }
 
     h1 {
       color: #004080;
       text-shadow: 2px 2px #ffffff;
+      margin: 1vh 0;
+      font-size: 4vw;
     }
 
     .buttons {
-      margin-bottom: 20px;
+      margin-bottom: 2vh;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     button {
       background-color: #0AAB63;
       color: white;
       border: none;
-      padding: 10px 18px;
-      margin: 5px;
+      padding: 1vh 2vw;
+      margin: 0.5vh 0.5vw;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 2vw;
       transition: transform 0.2s;
     }
 
@@ -43,9 +49,15 @@
 
     .map-container {
       position: relative;
-      display: inline-block;
-      width: 350px;
+      width: 80vw;      /* scales down on smaller screens */
+      max-width: 700px; /* keeps PC layout similar */
+      margin: 0 auto;
+    }
+
+    .map-container img {
+      width: 100%;
       height: auto;
+      display: block;
     }
 
     .district {
@@ -53,7 +65,7 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: auto;
+      height: 100%;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -63,25 +75,25 @@
     }
 
     #district-name {
-      font-size: 30px;
+      font-size: 5vw;
       font-weight: bold;
       color: #0AAB63;
       text-shadow: 2px 2px #fff;
-      margin-top: 15px;
+      margin-top: 1vh;
     }
 
     /* Music toggle button at bottom-right */
     #music-toggle {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 2vh;
+      right: 2vw;
       background-color: #007acc;
       border: none;
       color: white;
-      padding: 10px 15px;
+      padding: 1vh 2vw;
       border-radius: 50px;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 2vw;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       z-index: 1000;
       transition: transform 0.2s, background-color 0.2s;
@@ -91,6 +103,15 @@
       transform: scale(1.1);
       background-color: #0AAB63;
     }
+
+    /* Adjustments for very small screens */
+    @media (max-width: 600px) {
+      h1 { font-size: 6vw; }
+      button { font-size: 3vw; padding: 1vh 3vw; }
+      #district-name { font-size: 6vw; }
+      #music-toggle { font-size: 3vw; padding: 1vh 3vw; }
+    }
+
   </style>
 </head>
 <body>
@@ -113,7 +134,7 @@
   </div>
 
   <div class="map-container">
-    <img src="map.png" alt="Belize Map" id="base-map" width="100%">
+    <img src="map.png" alt="Belize Map" id="base-map">
     <img src="belize.png" alt="Belize District" id="belize" class="district">
     <img src="cayo.png" alt="Cayo District" id="cayo" class="district">
     <img src="corozal.png" alt="Corozal District" id="corozal" class="district">
@@ -131,7 +152,7 @@
     const audio = document.getElementById('background-music');
     const toggleBtn = document.getElementById('music-toggle');
 
-    // Attempt to autoplay music muted, then unmute
+    // Autoplay music muted first, then unmute
     window.addEventListener('load', () => {
       audio.play().catch(err => console.log("Autoplay prevented:", err));
       setTimeout(() => {
