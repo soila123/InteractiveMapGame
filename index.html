@@ -11,8 +11,7 @@
       padding: 0;
       font-family: Comic Sans MS, sans-serif;
       text-align: center;
-      /* Allow scrolling if needed */
-      overflow-y: auto;
+      overflow: hidden; /* no scroll */
       background: url('ele.png') no-repeat center center fixed;
       background-size: cover;
     }
@@ -50,8 +49,8 @@
 
     .map-container {
       position: relative;
-      width: 80vw;       /* scales down on smaller screens */
-      max-width: 700px;  /* keeps PC layout similar */
+      width: 80vw;      /* scales down on smaller screens */
+      max-width: 700px; /* keeps PC layout similar */
       margin: 0 auto;
     }
 
@@ -112,6 +111,7 @@
       #district-name { font-size: 6vw; }
       #music-toggle { font-size: 3vw; padding: 1vh 3vw; }
     }
+
   </style>
 </head>
 <body>
@@ -189,3 +189,4 @@
 
 </body>
 </html>
+
