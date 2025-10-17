@@ -15,8 +15,16 @@
       background-image: url('ele.png');
       background-repeat: no-repeat;
       background-position: center;
-      background-size: cover; /* Fills screen, may crop */
+      background-size: cover; /* fills both phone + PC */
+      background-attachment: fixed; /* keeps it fixed on large screens */
       overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        background-attachment: scroll; /* allows smooth movement on phones */
+        background-size: cover;
+      }
     }
 
     h1 {
@@ -81,4 +89,3 @@
   </script>
 </body>
 </html>
-
