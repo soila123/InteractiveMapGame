@@ -8,205 +8,77 @@
     body {
       font-family: Comic Sans MS, sans-serif;
       text-align: center;
-      background: url('ele.png') no-repeat center center;
-      background-size: contain; /* ✅ shows the entire image */
-      background-attachment: scroll; /* ✅ works better on phones */
-      background-color: #ffffff; /* background behind image */
       margin: 0;
-      padding: 20px;
+      padding: 0;
+      height: 100vh;
+      width: 100vw;
+      background-image: url('ele.png');
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover; /* Fills screen, may crop */
+      overflow: hidden;
     }
 
     h1 {
-      color: #004080;
-      text-shadow: 2px 2px #ffffff;
-      font-size: 2rem;
-    }
-
-    .buttons {
-      margin-bottom: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    button {
-      background-color: #0AAB63;
       color: white;
-      border: none;
-      padding: 10px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: transform 0.2s;
+      text-shadow: 2px 2px 5px black;
+      margin-top: 20px;
     }
 
-    button:hover {
-      transform: scale(1.1);
-      background-color: #007acc;
-    }
-
-    .map-container {
-      position: relative;
-      display: inline-block;
+    #map {
       width: 90%;
-      max-width: 400px;
+      max-width: 600px;
+      margin: 20px auto;
+      border: 3px solid white;
+      border-radius: 15px;
+      background-color: rgba(255, 255, 255, 0.7);
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
-    .map-container img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .district {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: auto;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-
-    .district.active {
-      opacity: 1;
-    }
-
-    #district-name {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #0AAB63;
-      text-shadow: 2px 2px #fff;
-      margin-top: 15px;
-    }
-
-    /* Music button */
-    #music-toggle {
+    #music-btn {
       position: fixed;
       bottom: 15px;
       right: 15px;
-      background-color: #007acc;
-      border: none;
+      background: rgba(0,0,0,0.6);
       color: white;
-      padding: 10px 15px;
-      border-radius: 50px;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
       cursor: pointer;
-      font-size: 14px;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
-      z-index: 1000;
-      transition: transform 0.2s, background-color 0.2s;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: transform 0.2s;
     }
 
-    #music-toggle:hover {
+    #music-btn:hover {
       transform: scale(1.1);
-      background-color: #0AAB63;
-    }
-
-    /* ✅ Responsive for phones */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      h1 {
-        font-size: 1.5rem;
-      }
-
-      .buttons button {
-        flex: 1 1 45%;
-        font-size: 0.9rem;
-        padding: 8px 12px;
-      }
-
-      #district-name {
-        font-size: 1.2rem;
-      }
-
-      #music-toggle {
-        bottom: 10px;
-        right: 10px;
-        font-size: 12px;
-        padding: 8px 10px;
-      }
+      background: rgba(255,255,255,0.2);
     }
   </style>
 </head>
 <body>
+  <h1>Belize Map Game</h1>
+  <div id="map">
+    <!-- Your map content goes here -->
+  </div>
 
-  <h1>Belize Interactive Map Game</h1>
-
-  <!-- Background Music -->
-  <audio id="background-music" loop muted>
-    <source src="song.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
+  <audio id="bg-music" autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Buttons -->
-  <div class="buttons">
-    <button onclick="showDistrict('belize')">Belize</button>
-    <button onclick="showDistrict('cayo')">Cayo</button>
-    <button onclick="showDistrict('corozal')">Corozal</button>
-    <button onclick="showDistrict('orange')">Orange Walk</button>
-    <button onclick="showDistrict('stann')">Stann Creek</button>
-    <button onclick="showDistrict('toledo')">Toledo</button>
-  </div>
-
-  <!-- Map -->
-  <div class="map-container">
-    <img src="map.png" alt="Belize Map" id="base-map">
-    <img src="belize.png" alt="Belize District" id="belize" class="district">
-    <img src="cayo.png" alt="Cayo District" id="cayo" class="district">
-    <img src="corozal.png" alt="Corozal District" id="corozal" class="district">
-    <img src="orange.png" alt="Orange Walk District" id="orange" class="district">
-    <img src="stann.png" alt="Stann Creek District" id="stann" class="district">
-    <img src="toledo.png" alt="Toledo District" id="toledo" class="district">
-  </div>
-
-  <div id="district-name"></div>
-
-  <!-- Music Toggle -->
-  <button id="music-toggle" onclick="toggleMusic()">🔊 Music On</button>
+  <button id="music-btn" onclick="toggleMusic()">🎵</button>
 
   <script>
-    const audio = document.getElementById('background-music');
-    const toggleBtn = document.getElementById('music-toggle');
-
-    // Autoplay muted, then unmute after load
-    window.addEventListener('load', () => {
-      audio.play().catch(err => console.log("Autoplay prevented:", err));
-      setTimeout(() => {
-        audio.muted = false;
-      }, 500);
-    });
-
+    const music = document.getElementById('bg-music');
     function toggleMusic() {
-      if (audio.paused) {
-        audio.play();
-        toggleBtn.textContent = '🔊 Music On';
+      if (music.paused) {
+        music.play();
       } else {
-        audio.pause();
-        toggleBtn.textContent = '🔇 Music Off';
+        music.pause();
       }
     }
-
-    function showDistrict(id) {
-      const districts = document.querySelectorAll('.district');
-      districts.forEach(d => d.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-
-      const nameMap = {
-        belize: 'Belize District',
-        cayo: 'Cayo District',
-        corozal: 'Corozal District',
-        orange: 'Orange Walk District',
-        stann: 'Stann Creek District',
-        toledo: 'Toledo District'
-      };
-      document.getElementById('district-name').innerText = nameMap[id];
-    }
   </script>
-
 </body>
 </html>
+
