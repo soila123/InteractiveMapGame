@@ -5,52 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Belize Map Game</title>
   <style>
-    /* Base layout */
-    body {
-      font-family: Comic Sans MS, sans-serif;
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      width: 100vw;
+      font-family: Comic Sans MS, sans-serif;
+      text-align: center;
+      overflow: hidden; /* no scroll */
       background: url('ele.png') no-repeat center center fixed;
       background-size: cover;
-      overflow-x: hidden;
     }
 
     h1 {
       color: #004080;
       text-shadow: 2px 2px #ffffff;
-      margin: 20px 0;
-      font-size: 2.2rem;
-      text-align: center;
+      margin: 1vh 0;
+      font-size: 4vw;
     }
 
-    /* Buttons */
     .buttons {
-      display: flex;
+      margin-bottom: 2vh;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      margin: 10px 0;
-      width: 90%;
-      max-width: 600px;
     }
 
     button {
       background-color: #0AAB63;
       color: white;
       border: none;
-      padding: 10px 16px;
+      padding: 1vh 2vw;
+      margin: 0.5vh 0.5vw;
       border-radius: 10px;
       cursor: pointer;
-      font-size: 1rem;
-      flex: 1 1 30%;
-      min-width: 100px;
-      transition: transform 0.2s, background-color 0.2s;
+      font-size: 2vw;
+      transition: transform 0.2s;
     }
 
     button:hover {
@@ -58,21 +45,17 @@
       background-color: #007acc;
     }
 
-    /* Map container fills remaining vertical space */
     .map-container {
       position: relative;
-      width: 90%;
-      max-width: 600px;
-      flex: 1 1 auto;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 90vw;
+      max-width: 800px;
+      height: auto;
+      margin: 0 auto;
     }
 
     .map-container img {
       width: 100%;
       height: auto;
-      max-height: 70vh; /* ensures it fits vertically */
       display: block;
     }
 
@@ -81,6 +64,7 @@
       top: 0;
       left: 0;
       width: 100%;
+      height: 100%;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
@@ -90,25 +74,25 @@
     }
 
     #district-name {
-      font-size: 1.8rem;
+      font-size: 5vw;
       font-weight: bold;
       color: #0AAB63;
       text-shadow: 2px 2px #fff;
-      margin: 10px 0;
+      margin-top: 1vh;
     }
 
-    /* Music button */
+    /* Music toggle button at bottom-right */
     #music-toggle {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 2vh;
+      right: 2vw;
       background-color: #007acc;
       border: none;
       color: white;
-      padding: 12px 15px;
+      padding: 1vh 2vw;
       border-radius: 50px;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 2vw;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
       z-index: 1000;
       transition: transform 0.2s, background-color 0.2s;
@@ -119,20 +103,12 @@
       background-color: #0AAB63;
     }
 
-    /* Responsiveness */
-    @media (max-width: 768px) {
-      h1 { font-size: 1.8rem; }
-      button { font-size: 0.9rem; padding: 8px 14px; }
-      #district-name { font-size: 1.4rem; }
-      .map-container img { max-height: 60vh; }
-    }
-
-    @media (max-width: 480px) {
-      h1 { font-size: 1.6rem; }
-      button { font-size: 0.85rem; padding: 8px 12px; }
-      #district-name { font-size: 1.2rem; }
-      #music-toggle { bottom: 15px; right: 15px; font-size: 14px; padding: 10px 12px; }
-      .map-container img { max-height: 50vh; }
+    /* Responsive adjustments */
+    @media (max-width: 600px) {
+      h1 { font-size: 6vw; }
+      button { font-size: 3vw; padding: 1vh 3vw; }
+      #district-name { font-size: 6vw; }
+      #music-toggle { font-size: 3vw; padding: 1vh 3vw; }
     }
   </style>
 </head>
@@ -143,9 +119,9 @@
   <!-- Background Music -->
   <audio id="background-music" loop muted>
     <source src="song.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
   </audio>
 
-  <!-- Buttons -->
   <div class="buttons">
     <button onclick="showDistrict('belize')">Belize</button>
     <button onclick="showDistrict('cayo')">Cayo</button>
@@ -155,7 +131,6 @@
     <button onclick="showDistrict('toledo')">Toledo</button>
   </div>
 
-  <!-- Map -->
   <div class="map-container">
     <img src="map.png" alt="Belize Map" id="base-map">
     <img src="belize.png" alt="Belize District" id="belize" class="district">
@@ -168,17 +143,19 @@
 
   <div id="district-name"></div>
 
-  <!-- Music Button -->
+  <!-- Music toggle button -->
   <button id="music-toggle" onclick="toggleMusic()">🔊 Music On</button>
 
   <script>
     const audio = document.getElementById('background-music');
     const toggleBtn = document.getElementById('music-toggle');
 
-    // Autoplay music
+    // Attempt to autoplay music muted, then unmute
     window.addEventListener('load', () => {
       audio.play().catch(err => console.log("Autoplay prevented:", err));
-      setTimeout(() => audio.muted = false, 500);
+      setTimeout(() => {
+        audio.muted = false;
+      }, 500);
     });
 
     function toggleMusic() {
@@ -195,7 +172,7 @@
       const districts = document.querySelectorAll('.district');
       districts.forEach(d => d.classList.remove('active'));
       document.getElementById(id).classList.add('active');
-
+      
       const nameMap = {
         belize: 'Belize District',
         cayo: 'Cayo District',
